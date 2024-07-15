@@ -1,7 +1,13 @@
-const { Socket } = require("socket.io");
+const { Server } = require("socket.io");
 
-const io = require("socket.io")(3000);
+const io = new Server(3000, {
+    cors: {
+        origin: "*", // Allow all origins
+        methods: ["GET", "POST"], // Allow specific HTTP methods
+    }
+});
 
-io.on("connection", socket =>{
-    socket.emit("chat-message", "Hello World")
+io.on("connection", socket => {
+    console.log("connected");
+    socket.emit("chat-message", "Hello World");
 });
