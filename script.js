@@ -8,16 +8,21 @@ appendMessage("You joined");
 socket.emit("new-user", username);
 
 socket.on("chat-message", data => {
-    appendMessage(data);
+    appendMessage(`${data.username}: ${data.message}`);
 })
 
 socket.on("user-connected", username => {
     appendMessage(`${username} connected`);
 })
 
+socket.on("user-disconnected", username => {
+    appendMessage(`${username} disconnected`);
+})
+
 messageForm.addEventListener("submit", e => {
     e.preventDefault();
     const message = messageInput.value;
+    appendMessage(`You: ${message}`);
     socket.emit("send-chat-message", message);
     messageInput.value = "";
 });

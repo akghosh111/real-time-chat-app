@@ -15,6 +15,12 @@ io.on("connection", socket => {
         socket.broadcast.emit("user-connected", username)
     })
     socket.on("send-chat-message", message =>{
-        socket.broadcast.emit("chat-message", message)
+        socket.broadcast.emit("chat-message", { message:message, username: users[socket.id]})
+    })
+    socket.on("disconnect", () =>{
+        socket.broadcast.emit("user-disconnected", users[socket.id])
+        delete users[socket.id];
     })
 });
+
+
