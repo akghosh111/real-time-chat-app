@@ -1,11 +1,35 @@
+const express = require("express");
+const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+
+
 const { Server } = require("socket.io");
 
-const io = new Server(3000, {
+app.set("views", "./views");
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true}));
+
+const rooms = {}
+
+app.get("/", (req, res) =>{
+    res.render("index", {rooms: rooms});
+});
+
+app.get("/:room", (res, req) => {
+    res.render("room", {roomName: req.params.room});
+});
+
+server.listen(3000);
+
+/*const io = new Server(3000, {
     cors: {
         origin: "*", // Allow all origins
         methods: ["GET", "POST"], // Allow specific HTTP methods
     }
 });
+*/
 
 const users = {}
 
